@@ -11,19 +11,19 @@ Jinx.View = {
     //implement this function in your view for init callback    
   },
   on: function(selector) {
-    return new Jinx.wrapper(this, this.element.find(selector));
+    return new Jinx.ViewActionWrapper(this, this.element.find(selector));
   },
   element: undefined,
   controller: undefined
 
 }
 
-Jinx.wrapper = function(view, element) {
+Jinx.ViewActionWrapper = function(view, element) {
   this.view = view;
   this.element = element;
 }
 
-Jinx.wrapper.prototype.click = function(event, element) {
+Jinx.ViewActionWrapper.prototype.click = function(event, element) {
   var self = this;
   this.element.click(function(){
     var value = self.view.element.find(element).val();

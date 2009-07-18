@@ -4,8 +4,9 @@ if(typeof Myapp == 'undefined')
 Myapp.AddTaskController = {
   model: Myapp.Task,
   add: function(task){
-    console.log('adding task '+task);
+    console.log('adding ' + task);
+    this.create({title: task}).and('update_tasks')
   }
 }
 
-Myapp.AddTaskController = $.extend({}, Jinx.Controller, Myapp.AddTaskController)
+Myapp.AddTaskController = $.extend({}, Jinx.Controller, Myapp.AddTaskController);//TODO automate extends
