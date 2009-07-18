@@ -14,11 +14,34 @@ Jinx.Controller = {
 Jinx.ModelActionWrapper = function(controller, modelAction){
   this.controller = controller;
   this.modelAction = modelAction;
+  this.viewActions = [];//allows chaining multiple view actions using _and
 }
 
-Jinx.ModelActionWrapper.prototype.and = function(callback_action){
-  var callback = this.controller.view[callback_action]
-  this.modelAction(callback)
+Jinx.ModelActionWrapper.prototype._and = function(view_action, args){
+  var self = this;
+  this.viewActions.push(function(){
+    self.controller.view[view_action](args);
+  });
+  console.log('view actions', this.viewActions);
+  return this;
+}
+
+Jinx.ModelActionWrapper.prototype.and = function(view_action, args){
+  var self = this;
+  this.viewActions.push(function(){
+    self.controller.view[view_action](args);
+  });
+  console.log('view actions', this.viewActions);
+  this.modelAction(this.callback())
+}
+
+Jinx.ModelActionWrapper.prototype.callback = function(){
+  var self = this;
+  return function(){
+    $.each(self.viewActions, function(index,viewAction){
+      viewAction();
+    });
+  };
 }
 
 Jinx.RestfulController = {

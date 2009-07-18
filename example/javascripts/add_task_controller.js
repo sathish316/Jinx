@@ -5,7 +5,10 @@ Myapp.AddTaskController = {
   model: Myapp.Task,
   add: function(task){
     console.log('adding ' + task);
-    this.create({title: task}).and('update_tasks')
+    this.create({title: task})
+        ._and('show_message','Task added')
+        ._and('add_task', task)
+        .and('update_task_count')
   }
 }
 
