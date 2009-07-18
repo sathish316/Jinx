@@ -1,0 +1,17 @@
+Jinx is an MVC helper for javascript written in jquery. It lets you segregate and easily manage your monolithic javscript code into
+the model, view and controller pattern, which is the cornerstone of GUI apps.
+
+Jinx is not pure MVC. It is loosely based on the MVP pattern and has the following principles:
+* View encapsulates the DOM view on the HTML page.
+View captures DOM events and translates them as application events to the controller.
+Jinx uses a dsl to simplify DOM event translation to app events and encourages to use that as much as possible.
+The View by itself doesn't contain any application logic other than rendering sections of a page.
+* Model is a representation of your Server side models on the client side.
+Models know how to make REST calls so you dont have to write any code if you want to perform CRUD operations on the model.
+* Controller is responsible for binding the model and view together and for communicating with other controllers.
+Controller can make Ajax calls which are not related to a domain model
+* It comes with generators for model, view and controller similar to rails
+* It has testing support using blueridge built in, with helpers for easily accessing model, view and controller in tests.
+
+Please read through the sample application code to know how you can use Jinx to leverage classic MVC patterns to write better ajax applications.
+
