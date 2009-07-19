@@ -15,5 +15,3 @@ Myapp.AddTaskView = {
     this.flash('success', msg);
   }
 }
-
-Myapp.AddTaskView = $.extend({}, Jinx.View, Myapp.AddTaskView);//TODO automate extends

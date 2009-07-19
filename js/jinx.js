@@ -10,8 +10,13 @@ Jinx.init = function(options){
     var viewName = $.camelize(viewId);
     var controllerName = $.camelize(viewId).replace('View', 'Controller');
 
+    var scope = o.scope ? o.scope : window;
+    scope[viewName] = $.extend({}, Jinx.View, scope[viewName]);
+    scope[controllerName] = $.extend({}, Jinx.Controller, scope[controllerName]);
+
     var view = o.scope[viewName];
     var controller = o.scope[controllerName];
+    //TODO decorate controller.model with REST methods
 
     console.log('view',view);
     console.log('controller',controller);
@@ -21,6 +26,7 @@ Jinx.init = function(options){
   });
 }
 
+//Jinx utils
 $.capitalize = function(value){
   return value.charAt(0).toUpperCase() + value.slice(1);
 }

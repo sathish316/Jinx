@@ -22,7 +22,6 @@ Jinx.ModelActionWrapper.prototype._and = function(view_action, args){
   this.viewActions.push(function(){
     self.controller.view[view_action](args);
   });
-  console.log('view actions', this.viewActions);
   return this;
 }
 
@@ -31,7 +30,6 @@ Jinx.ModelActionWrapper.prototype.and = function(view_action, args){
   this.viewActions.push(function(){
     self.controller.view[view_action](args);
   });
-  console.log('view actions', this.viewActions);
   this.modelAction(this.callback())
 }
 

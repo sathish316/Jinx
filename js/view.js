@@ -1,6 +1,5 @@
 Jinx.View = {
   _init: function(options) {
-    console.log(options);
     var o = options;
     console.log('Init view ' + o.element.attr('id'));
     this.element = o.element;
