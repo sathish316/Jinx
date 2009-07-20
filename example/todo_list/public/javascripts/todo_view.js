@@ -8,6 +8,7 @@ Myapp.TodoView = {
 
   bindTodoItems: function(){
     this.when('.todo_item','.delete').is_clicked('destroy').it();
+    this.when('.todo_item','.done').is_toggled('toggle').it();
   },
 
   add: function(task, data){

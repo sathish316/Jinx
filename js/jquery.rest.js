@@ -11,19 +11,7 @@ $.extend({
     $.ajax($.extend({}, {type: 'DELETE'}, o))
   },
 
-  //restPut: function(o) {
-  //  o = $.extend({ representation: {} }, o||{});
-  //
-  //  return _restAjax($.extend({}, o, {
-  //    type: 'PUT',
-  //    data: o.representation
-  //  }));
-  //},
-  //
-  //restDelete: function(o) {
-  //  return _restAjax($.extend({}, o||{}, {
-  //    type: 'POST',
-  //    data: { '_method' : 'DELETE' }
-  //  }));
-  //}
+  restPut: function(o) {
+    $.ajax($.extend({}, {type: 'PUT'}, o))
+  }
 });

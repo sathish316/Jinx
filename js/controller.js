@@ -98,8 +98,11 @@ Jinx.RestfulController = {
       self.model.create(params, callback);
     });
   },
-  update: function(){
-    this.model.update(arguments);
+  update: function(uri, params){
+    var self = this;
+    return new Jinx.ModelActionWrapper(this, function(callback){
+      self.model.update(uri, params, callback);
+    });
   },
   del: function(uri){
     var self = this;

@@ -31,14 +31,32 @@ Jinx.ViewActionWrapper.prototype.is_clicked = function(controller_action, data_s
   var self = this;
   this.elements.each(function(index){
     var e = this;
-    $(this).click(function(){
+    $(this).unbind('click').click(function(){
       //console.log(e,'clicked');
-      var value = data_selector ? self.view.element.find(data_selector).val() : self.view.element.find(self.sel).eq(index).attr('uri');
+      var value = data_selector ? self.view.element.find(data_selector).val() :
+        (self.params ? self.params : self.view.element.find(self.sel).eq(index).attr('uri'));
+
       self.view.controller[controller_action](value);
     })
   });
   return this;
 }
 
-Jinx.ViewActionWrapper.prototype.it = function(){
+Jinx.ViewActionWrapper.prototype.is_toggled = function(controller_action) {
+  var self = this;
+  this.elements.each(function(index){
+    var e = this;
+    $(this).unbind('change').change(function(){
+      var uri = self.view.element.find(self.sel).eq(index).attr('uri');
+      self.view.controller[controller_action](uri, this.checked);
+    })
+  });
+  return this;
 }
+
+Jinx.ViewActionWrapper.prototype.it = function(params){
+//  if(params)
+//    this.params = params;
+  return this;
+}
+
