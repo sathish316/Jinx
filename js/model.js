@@ -6,9 +6,9 @@ Jinx.Model = {
     };
     return post_data;
   },
-  parse_json: function(model, data){
+  parse_json: function(model, data, to_uri){
     return $.map(eval(data), function(datum){
-      return datum[model];
+      return $.extend(datum[model], {uri: to_uri(datum[model].id)});
     });
   }
 };

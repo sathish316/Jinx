@@ -3,20 +3,37 @@ if(typeof Myapp == 'undefined')
 
 Myapp.TodoView = {
   init: function(){
-    this.on('.add-button').click('add','.task');
+    this.when('.add-button').is_clicked('add','.task');
   },
-  add_todo: function(task){
+
+  bindTodoItems: function(){
+    this.when('.todo_item','.delete').is_clicked('destroy').it();
+  },
+
+  add: function(task, data){
+    this.render_todo_item({uri: data.uri, title: task})
+    this.bindTodoItems();
+  },
+
+  render_todo_item: function(todo){
     $('#todo_items').append(
-      $('<div/>').append("<input type='checkbox' class='done'>").append(task)
+      $('<div/>').addClass('todo_item')
+                  .attr('uri', todo.uri)
+                  .append("<input type='button' class='delete' value='X'>")
+                  .append("<input type='checkbox' class='done'>")
+                  .append($('<span/>').text(todo.title))
     );
   },
+
   render_todo_items: function(todos){
     var self = this;
     $.each(todos, function(i,todo){
-      self.add_todo(todo.title);
-    })
+      self.render_todo_item(todo);
+    });
+    this.bindTodoItems();
   },
-  update_task_count: function(){
-    $('.counter').text(Number($('.counter').text())+1);
+
+  remove: function(uri){
+    this.element.find('*[uri='+uri+']').remove();
   }
 }

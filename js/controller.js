@@ -28,16 +28,19 @@ Jinx.ModelActionWrapper = function(controller, modelAction){
   this.renderActions = [];
 }
 
-//delays view action execution with args
+//delays view action execution with args + callback data
 Jinx.ModelActionWrapper.prototype._and = function(view_action, args){
   var self = this;
-  this.viewActions.push(function(){
-    self.controller.view[view_action](args);
+  this.viewActions.push(function(data){
+    if(args)
+      self.controller.view[view_action](args, data); //TODO handle if no args
+    else
+      self.controller.view[view_action](data);
   });
   return this;
 }
 
-//delays view action execution with args and calls end
+//delays view action execution with args + callback data and calls end
 Jinx.ModelActionWrapper.prototype.and = function(view_action, args){
   this._and(view_action, args).end();
 }
@@ -80,7 +83,7 @@ Jinx.ModelActionWrapper.prototype.callback = function(){
   var self = this;
   return function(data){
     $.each(self.viewActions, function(index,viewAction){
-      viewAction();
+      viewAction(data);
     });
     $.each(self.renderActions, function(index,renderAction){
       renderAction(data);
@@ -98,8 +101,11 @@ Jinx.RestfulController = {
   update: function(){
     this.model.update(arguments);
   },
-  del: function(){
-    this.model.del()
+  del: function(uri){
+    var self = this;
+    return new Jinx.ModelActionWrapper(this, function(callback){
+      self.model.del(uri, callback);
+    });
   },
   get_all: function(){
     var self = this;

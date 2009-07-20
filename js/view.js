@@ -6,26 +6,39 @@ Jinx.View = {
     this.controller = o.controller;
     this.init();
   },
+
   init: function() {
     //implement this function in your view for init callback    
   },
-  on: function(selector) {
-    return new Jinx.ViewActionWrapper(this, this.element.find(selector));
+
+  when: function(sel,child_sel){
+    return new Jinx.ViewActionWrapper(this, sel, child_sel);
   },
+
   element: undefined,
   controller: undefined
 
 }
 
-Jinx.ViewActionWrapper = function(view, element) {
+Jinx.ViewActionWrapper = function(view, sel, child_sel) {
   this.view = view;
-  this.element = element;
+  this.sel = sel;
+  var selector = child_sel ? sel + ' ' + child_sel : sel;
+  this.elements = this.view.element.find(selector);
 }
 
-Jinx.ViewActionWrapper.prototype.click = function(event, element) {
+Jinx.ViewActionWrapper.prototype.is_clicked = function(controller_action, data_selector) {
   var self = this;
-  this.element.click(function(){
-    var value = self.view.element.find(element).val();
-    self.view.controller[event](value);
+  this.elements.each(function(index){
+    var e = this;
+    $(this).click(function(){
+      //console.log(e,'clicked');
+      var value = data_selector ? self.view.element.find(data_selector).val() : self.view.element.find(self.sel).eq(index).attr('uri');
+      self.view.controller[controller_action](value);
+    })
   });
+  return this;
+}
+
+Jinx.ViewActionWrapper.prototype.it = function(){
 }

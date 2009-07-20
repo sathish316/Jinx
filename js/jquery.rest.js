@@ -5,7 +5,11 @@ $.extend({
 
   restPost: function(o) {
     $.ajax($.extend({}, {type: 'POST'}, o))
-  }
+  },
+
+  restDelete: function(o) {
+    $.ajax($.extend({}, {type: 'DELETE'}, o))
+  },
 
   //restPut: function(o) {
   //  o = $.extend({ representation: {} }, o||{});

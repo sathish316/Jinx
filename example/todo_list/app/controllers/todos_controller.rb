@@ -48,7 +48,7 @@ class TodosController < ApplicationController
       if @todo.save
         flash[:notice] = 'Todo was successfully created.'
         format.html { redirect_to(@todo) }
-        format.json { head :created, :location => @todo }
+        format.json { head :created, :location => todo_url(@todo, :format => :json)}
       else
         format.html { render :action => "new" }
         format.json  { render :json => @todo.errors.to_json, :status => :unprocessable_entity }
