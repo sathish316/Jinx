@@ -4,12 +4,9 @@ if(typeof Myapp == 'undefined')
 Myapp.TodoController = {
   model: Myapp.Todo,
   init: function(){
-
+    this.get_all().and_render('todo_items');
   },
   add: function(task){
-    this.create({title: task})
-        .and_flash('success','Todo created')// TODO move flash from view to controller
-//        ._and('add_task', task)
-//        .and('update_task_count')
+    this.create({title: task})._and_flash('success','Todo created').and('add_todo',task)
   }
 }

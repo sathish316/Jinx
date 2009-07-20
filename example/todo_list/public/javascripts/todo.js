@@ -8,9 +8,18 @@ Myapp.Todo = {
     var self = this;
     $.restPost({
       url: self.url,
-      data: self.parse(self.name, params),
+      data: self.parse_params(self.name, params),
       success: function(data,status){
         callback();
+      }
+    });
+  },
+  find_all: function(callback){
+    var self = this;
+    $.restGet({
+      url: self.url,
+      success: function(data,status){
+        callback(self.parse_json(self.name,data));
       }
     });
   }

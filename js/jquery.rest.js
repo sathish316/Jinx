@@ -1,11 +1,7 @@
 $.extend({
-  //restGet: function(o) {
-  //  o = o||{};
-  //  delete o.data;
-  //  return _restAjax($.extend({}, o, {
-  //    type: 'GET'
-  //  }));
-  //},
+  restGet: function(o) {
+    $.ajax($.extend({}, {type: 'GET'}, o))
+  },
 
   restPost: function(o) {
     $.ajax($.extend({}, {type: 'POST'}, o))

@@ -1,10 +1,15 @@
 Jinx.Model = {
-  parse: function(model, params){
+  parse_params: function(model, params){
     var post_data = {};
     for(var param in params){
       post_data[model + '[' + param + ']'] = params[param];
     };
     return post_data;
+  },
+  parse_json: function(model, data){
+    return $.map(eval(data), function(datum){
+      return datum[model];
+    });
   }
 };
 
@@ -21,7 +26,7 @@ Jinx.RestfulModel = {
   find: function(){
 
   },
-  list: function(){
+  find_all: function(){
 
   }
 }

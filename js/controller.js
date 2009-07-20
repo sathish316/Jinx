@@ -3,6 +3,7 @@ Jinx.Controller = {
     var o = options;
     console.log('Init controller for ' + o.view.element.attr('id'));
     this.view = o.view;
+    this.init();
   },
   init: function(){
     //implement this function in your controller for init callbacks  
@@ -24,8 +25,10 @@ Jinx.ModelActionWrapper = function(controller, modelAction){
   this.controller = controller;
   this.modelAction = modelAction;
   this.viewActions = [];
+  this.renderActions = [];
 }
 
+//delays view action execution with args
 Jinx.ModelActionWrapper.prototype._and = function(view_action, args){
   var self = this;
   this.viewActions.push(function(){
@@ -34,14 +37,31 @@ Jinx.ModelActionWrapper.prototype._and = function(view_action, args){
   return this;
 }
 
+//delays view action execution with args and calls end
 Jinx.ModelActionWrapper.prototype.and = function(view_action, args){
   this._and(view_action, args).end();
 }
 
+//delays view render action execution with callback data
+Jinx.ModelActionWrapper.prototype._and_render = function(render_action){
+  var self = this;
+  this.renderActions.push(function(data){
+    self.controller.view['render_' + render_action](data);
+  });
+  return this;
+}
+
+//delays view render action execution with callback data and calls end
+Jinx.ModelActionWrapper.prototype.and_render = function(render_action){
+  this._and_render(render_action).end();
+}
+
+//executes model action passing the aggregate of view actions as callback
 Jinx.ModelActionWrapper.prototype.end = function(){
   this.modelAction(this.callback());
 }
 
+//delays flash action
 Jinx.ModelActionWrapper.prototype._and_flash = function(level, msg){
   var self = this;
   this.viewActions.push(function(){
@@ -50,15 +70,20 @@ Jinx.ModelActionWrapper.prototype._and_flash = function(level, msg){
   return this;
 }
 
+//delays flash action and executes model action
 Jinx.ModelActionWrapper.prototype.and_flash = function(level, msg){
   this._and_flash(level, msg).end();
 }
 
-Jinx.ModelActionWrapper.prototype.callback = function(){
+//creates callback fn by aggregating view actions and render actions
+Jinx.ModelActionWrapper.prototype.callback = function(){  
   var self = this;
-  return function(){
+  return function(data){
     $.each(self.viewActions, function(index,viewAction){
       viewAction();
+    });
+    $.each(self.renderActions, function(index,renderAction){
+      renderAction(data);
     });
   };
 }
@@ -76,8 +101,11 @@ Jinx.RestfulController = {
   del: function(){
     this.model.del()
   },
-  index: function(){
-    this.model.index(arguments);
+  get_all: function(){
+    var self = this;
+    return new Jinx.ModelActionWrapper(this, function(callback){
+      self.model.find_all(callback);
+    });
   },
   show: function(){
     this.model.show(arguments);    
