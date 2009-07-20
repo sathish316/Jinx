@@ -16,10 +16,11 @@ Jinx.init = function(options){
 
     var view = o.scope[viewName];
     var controller = o.scope[controllerName];
-    //TODO decorate controller.model with REST methods
+    var model = controller.model = $.extend({}, Jinx.Model, controller.model);
 
     console.log('view',view);
     console.log('controller',controller);
+    console.log('model',controller.model);
 
     view._init({element: $('#'+viewId), controller: controller});
     controller._init({view: view});
@@ -27,10 +28,6 @@ Jinx.init = function(options){
 }
 
 //Jinx utils
-$.capitalize = function(value){
-  return value.charAt(0).toUpperCase() + value.slice(1);
-}
-
 $.camelize = function(value){
   var camelized = "", c , p;
   for(var i=0;i<value.length;i++){
@@ -43,3 +40,7 @@ $.camelize = function(value){
   }
   return camelized;
 };
+
+$.capitalize = function(value){
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}

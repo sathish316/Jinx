@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <title>Jinx Sample App</title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css"/>
+    <script src="javascripts/jinx/jquery-1.3.2.js"></script>
+    <script src="javascripts/jinx/jinx.js"></script>
+    <script src="javascripts/jinx/model.js"></script>
+    <script src="javascripts/jinx/view.js"></script>
+    <script src="javascripts/jinx/controller.js"></script>
+    <script src="javascripts/jinx/jquery.rest.js"></script>
+    <script src="javascripts/todo.js"></script>
+    <script src="javascripts/todo_view.js"></script>
+    <script src="javascripts/todo_controller.js"></script>
+    <script>
+      $(function() {
+        Jinx.init({scope: Myapp});
+      });
+    </script>
+  </head>
+  <body>
+    <div>Todo List (<span class="counter">0</span>)</div>
+    <div id="todo_view" class="view">
+      <div class="flash"></div>
+      <input type='text' class='task' size='20'>
+      <input type='button' class='add-button' value='add'>
+    </div>
+    <ul id="todo_items">
+
+    </ul>
+  </body>
+</html>

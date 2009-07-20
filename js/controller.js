@@ -7,14 +7,23 @@ Jinx.Controller = {
   init: function(){
     //implement this function in your controller for init callbacks  
   },
+  flash: function(level, msg){
+    this.view.element.find('.flash')
+        .removeClass('notice')
+        .removeClass('success')
+        .removeClass('error')
+        .addClass(level)
+        .text(msg);
+  },
   view: undefined,
   model: undefined
 }
 
+//wraps model action and provides callback that executes one or more actions on the view
 Jinx.ModelActionWrapper = function(controller, modelAction){
   this.controller = controller;
   this.modelAction = modelAction;
-  this.viewActions = [];//allows chaining multiple view actions using _and
+  this.viewActions = [];
 }
 
 Jinx.ModelActionWrapper.prototype._and = function(view_action, args){
@@ -26,11 +35,23 @@ Jinx.ModelActionWrapper.prototype._and = function(view_action, args){
 }
 
 Jinx.ModelActionWrapper.prototype.and = function(view_action, args){
+  this._and(view_action, args).end();
+}
+
+Jinx.ModelActionWrapper.prototype.end = function(){
+  this.modelAction(this.callback());
+}
+
+Jinx.ModelActionWrapper.prototype._and_flash = function(level, msg){
   var self = this;
   this.viewActions.push(function(){
-    self.controller.view[view_action](args);
+    self.controller.flash(level,msg);
   });
-  this.modelAction(this.callback())
+  return this;
+}
+
+Jinx.ModelActionWrapper.prototype.and_flash = function(level, msg){
+  this._and_flash(level, msg).end();
 }
 
 Jinx.ModelActionWrapper.prototype.callback = function(){
@@ -43,10 +64,10 @@ Jinx.ModelActionWrapper.prototype.callback = function(){
 }
 
 Jinx.RestfulController = {
-  create: function(){
-    var self = this, args = arguments;
+  create: function(params){
+    var self = this;
     return new Jinx.ModelActionWrapper(this, function(callback){
-      self.model.create(args, callback);
+      self.model.create(params, callback);
     });
   },
   update: function(){

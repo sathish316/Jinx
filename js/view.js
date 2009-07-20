@@ -9,14 +9,6 @@ Jinx.View = {
   init: function() {
     //implement this function in your view for init callback    
   },
-  flash: function(level, msg){
-    this.element.parent().find('.flash')
-        .removeClass('notice')
-        .removeClass('success')
-        .removeClass('error')
-        .addClass(level)
-        .text(msg);
-  },
   on: function(selector) {
     return new Jinx.ViewActionWrapper(this, this.element.find(selector));
   },
