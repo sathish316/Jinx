@@ -1,7 +1,7 @@
 Jinx is a javascript MVC framework with a dsl for writing restful ajax applications. 
 It lets you separate and easily manage your javscript code into the model, view and controller pattern.
 
-Jinx is not pure MVC. It is loosely based on the MVP pattern and has the following principles:
+Jinx is loosely based on the MVP pattern and has the following principles:
 * View encapsulates the DOM view on the HTML page.
 View captures DOM events and translates them as application events to the controller.
 View only takes care of rendering sections of a page and doesn't have any application logic.
@@ -9,10 +9,28 @@ View only takes care of rendering sections of a page and doesn't have any applic
 Models know how to make RESTful calls so you dont have to write any code if you want to perform CRUD operations on the model.
 * Controller is responsible for binding the model and view together and for communicating with other controllers.
 
+Jinx uses URI to identify a resource similar to the way id is used in active record.
+There is an example todolist rails app which drives development. Jinx is still under development.
+
 Jinx uses a dsl to simplify 
 - DOM event translation in View to app events on the controller
-- chaining ajax callback actions in the controller
+- chaining ajax callback actions in the controller, etc
 
-There is an example todolist rails app which drives development.
-Jinx is still under development.
+Some examples of Jinx dsl usage:
 
+View:
+this.when('.add-button').is_clicked('add','.task');
+this.when('.todo_item','.delete').is_clicked('destroy').it();
+
+Controller:
+this.get_all().and_render('todo_items');
+this.create({todo: todo})._and_flash('success','Todo created').and('add',todo);
+
+Model:
+Model has to specify only the resource name and base url of the resource. Model knows how to make Restful calls from the base Jinx model. 
+You only have to write additional code if you want to have non-restful actions on the model.
+
+Todo = {
+  resource: 'todo',
+  base_url: 'http://localhost:3000/todos'
+}
